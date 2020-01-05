@@ -2,7 +2,7 @@ import * as chai from 'chai';
 const chaiHttp = require('chai-http');
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { test } from './index';
+import { test } from './auth';
 chai.use(chaiHttp);
 
 describe('Auth Endpoints', () => {
