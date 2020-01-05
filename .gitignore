@@ -1,0 +1,12 @@
+.DS_Store
+node_modules
+typings
+bin
+dist
+.env
+*.log
+.nyc_output
+coverage
+.idea
+/out
+test-results.xml
