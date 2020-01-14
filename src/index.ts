@@ -18,17 +18,11 @@ passport.use(
 			clientSecret: 'vwM9pqgOoBkkTF1hxhqg4A8k', // keys.googleClientSecret,
 			callbackURL: '/auth/google/callback',
 			profileFields: ['id', 'name', 'displayName', 'emails', 'image', 'url', 'picture'],
-			// proxy: true,
+			proxy: true,
 		} as GoogleStrategy.StrategyOptions,
 		serviceHandler,
 	),
 );
-
-// Serialize user into the sessions
-passport.serializeUser((user, done) => done(null, user));
-
-// Deserialize user from the sessions
-passport.deserializeUser((user, done) => done(null, user));
 
 // mongoose.connect(mongo.uri, {
 // 	useNewUrlParser: true,
