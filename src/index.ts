@@ -8,7 +8,7 @@ import * as passport from 'passport';
 import { PORT } from './config';
 import * as routes from './routes';
 import * as GoogleStrategy from 'passport-google-oauth20';
-import { serviceHandler } from './auth/google-passport';
+import { userHandler } from './auth/user-handler';
 const googleStrategy = GoogleStrategy.Strategy;
 
 passport.use(
@@ -20,7 +20,7 @@ passport.use(
 			profileFields: ['id', 'name', 'displayName', 'emails', 'image', 'url', 'picture'],
 			proxy: true,
 		} as GoogleStrategy.StrategyOptions,
-		serviceHandler,
+		userHandler,
 	),
 );
 

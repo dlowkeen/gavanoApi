@@ -1,19 +1,13 @@
-// const mongoose = require("mongoose");
-// const keys = require("../config/keys");
-// const User = mongoose.model("user");
-// const { serialize, deserialize } = require("./utils/serialize");
-
 import * as passport from 'passport';
 import * as GoogleStrategy from 'passport-google-oauth20';
 
-const googleStrategy = GoogleStrategy.Strategy;
-
-export const serviceHandler = async (
+export const userHandler = async (
 	accessToken: string,
 	refreshToken: string,
 	profile: passport.Profile,
 	done: GoogleStrategy.VerifyCallback,
 ) => {
+	console.log('profile', profile);
 	done('user!');
 	// let authUser = null;
 	// // Select appropriate api for profile provider
@@ -53,16 +47,3 @@ export const serviceHandler = async (
 	// const user = await User(authUser.userModel).save();
 	// done(null, user);
 };
-
-passport.use(
-	new googleStrategy(
-		{
-			clientID: '59785752505-24lhl2afe0bfha3r0ullonb529e0n8fl.apps.googleusercontent.com', // keys.googleClientID,
-			clientSecret: 'vwM9pqgOoBkkTF1hxhqg4A8k', // keys.googleClientSecret,
-			callbackURL: '/auth/google/callback',
-			profileFields: ['id', 'name', 'displayName', 'emails', 'image', 'url', 'picture'],
-			// proxy: true,
-		} as GoogleStrategy.StrategyOptions,
-		serviceHandler,
-	),
-);
