@@ -2,7 +2,7 @@ export const ENV = process.env.NODE_ENV || 'development';
 export const PORT = process.env.PORT || 3000;
 
 export const mongo = {
-	uri: ENV === 'production' ? 'prodmongouri' : 'devmongouri',
+	uri: process.env.MONGO_URI || 'NA',
 };
 
 export const facebook = {
@@ -13,7 +13,7 @@ export const facebook = {
 };
 
 export const google = {
-	clientID: 'INSERT-CLIENT-ID-HERE',
-	clientSecret: 'INSERT-CLIENT-SECRET-HERE',
+	clientID: process.env.GOOGLE_CLIENT_ID || 'NA',
+	clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'NA',
 	callbackURL: 'http://localhost:3000/auth/google/callback',
 };

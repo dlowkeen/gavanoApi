@@ -1,21 +1,21 @@
 import * as express from 'express';
 import * as helmet from 'helmet';
 import * as bodyParser from 'body-parser';
-// import * as mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import * as morgan from 'morgan';
 import * as cors from 'cors';
 import * as passport from 'passport';
-import { PORT } from './config';
+import { PORT, google, mongo } from './config';
 import * as routes from './routes';
 import * as GoogleStrategy from 'passport-google-oauth20';
-import { userHandler } from './auth/user-handler';
+import { userHandler } from './auth/helper/user-handler';
 const googleStrategy = GoogleStrategy.Strategy;
 
 passport.use(
 	new googleStrategy(
 		{
-			clientID: '59785752505-24lhl2afe0bfha3r0ullonb529e0n8fl.apps.googleusercontent.com', // keys.googleClientID,
-			clientSecret: 'vwM9pqgOoBkkTF1hxhqg4A8k', // keys.googleClientSecret,
+			clientID: google.clientID,
+			clientSecret: google.clientSecret,
 			callbackURL: '/auth/google/callback',
 			profileFields: ['id', 'name', 'displayName', 'emails', 'image', 'url', 'picture'],
 			proxy: true,
@@ -24,29 +24,28 @@ passport.use(
 	),
 );
 
-// mongoose.connect(mongo.uri, {
-// 	useNewUrlParser: true,
-// 	useUnifiedTopology: true,
-// });
+mongoose.connect(mongo.uri, {
+	useUnifiedTopology: true,
+	useNewUrlParser: true,
+});
+const connected = 200;
+const error = 400;
+const disconnected = 500;
 
-// const connected = 200;
-// const error = 400;
-// const disconnected = 500;
-
-// mongoose.connection.on('connected', function() {
-// 	console.log(connected + ' - Mongoose default connection is open to ', mongo.uri);
-// });
-// mongoose.connection.on('error', function(err) {
-// 	console.log(error + ' - Mongoose default connection has occured ' + err + ' error. string: ' + mongo.uri);
-// });
-// mongoose.connection.on('disconnected', function() {
-// 	console.log(disconnected + ' - Mongoose default connection is disconnected');
-// });
-// process.on('SIGINT', function() {
-// 	mongoose.connection.close(function() {
-// 		console.log('Mongoose default connection is disconnected due to application termination');
-// 	});
-// });
+mongoose.connection.on('connected', function() {
+	console.log(connected + ' - Mongoose default connection is open to ', mongo.uri);
+});
+mongoose.connection.on('error', function(err) {
+	console.log(error + ' - Mongoose default connection has occured ' + err + ' error. string: ' + mongo.uri);
+});
+mongoose.connection.on('disconnected', function() {
+	console.log(disconnected + ' - Mongoose default connection is disconnected');
+});
+process.on('SIGINT', function() {
+	mongoose.connection.close(function() {
+		console.log('Mongoose default connection is disconnected due to application termination');
+	});
+});
 
 const app = express();
 
