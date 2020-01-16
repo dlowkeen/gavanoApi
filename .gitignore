@@ -10,3 +10,4 @@ coverage
 .idea
 /out
 test-results.xml
+.vscode
