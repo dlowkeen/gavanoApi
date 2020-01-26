@@ -8,8 +8,23 @@ import * as passport from 'passport';
 import { PORT, google, mongo } from './config';
 import * as routes from './routes';
 import * as GoogleStrategy from 'passport-google-oauth20';
+import * as passportLocal from 'passport-local';
 import { userHandler } from './auth/helper/user-handler';
 const googleStrategy = GoogleStrategy.Strategy;
+const LocalStrategy = passportLocal.Strategy;
+
+passport.use(
+	new LocalStrategy(
+		{
+			usernameField: 'email',
+			passwordField: 'password',
+		},
+		function(email, password, done) {
+			console.log(email, password);
+			done(null, email);
+		},
+	),
+);
 
 passport.use(
 	new googleStrategy(
@@ -45,6 +60,14 @@ process.on('SIGINT', function() {
 	mongoose.connection.close(function() {
 		console.log('Mongoose default connection is disconnected due to application termination');
 	});
+});
+
+passport.serializeUser(function(user, cb) {
+	cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+	cb(null, obj);
 });
 
 const app = express();

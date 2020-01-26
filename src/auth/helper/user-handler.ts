@@ -20,7 +20,8 @@ export const userHandler = async (
 	let existingUser = authUser ? await User.findOne({ [authUser.identifier]: profile.id }) : null;
 
 	if (existingUser) {
-		return done('user found', existingUser);
+		console.log('existingUser', existingUser);
+		return done(undefined, existingUser);
 	}
 
 	// Check to see if user already exists by comparing email addresses
@@ -42,5 +43,5 @@ export const userHandler = async (
 
 	// Create a new user record is user does not exist
 	const user = authUser && authUser.userModel ? await new User(authUser.userModel).save() : null;
-	done('user created', user);
+	return done('user created', user);
 };
