@@ -1,10 +1,10 @@
 import * as express from 'express';
 import * as passport from 'passport';
 
-export const authenticateLocal = passport.authenticate('local', {
-	successRedirect: '/healthcheck',
-	failureRedirect: '/login',
-	failureFlash: true,
+export const authenticateLocal = passport.authenticate('local', function(req, res) {
+	// If this function gets called, authentication was successful.
+	// `req.user` contains the authenticated user.
+	res.redirect('/auth/logged-in/?email=' + req.user);
 });
 
 // ********* Google OAuth *********
@@ -17,11 +17,19 @@ export const requestGoogleToken = passport.authenticate('google', {
 export const authenticateGoogleUser = [
 	passport.authenticate('google'),
 	(req: express.Request, res: express.Response) => {
-		console.log('WE MADE IT HERE*****************');
 		res.redirect('/healthcheck');
 		// return true;
 	},
 ];
+
+export function authenticated(req: express.Request, res: express.Response) {
+	const { email, token } = req.query;
+	const user = {
+		email,
+		token,
+	};
+	return res.json(user);
+}
 
 export const test = () => {
 	return 'testing';
